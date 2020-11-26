@@ -16,7 +16,7 @@ services:
       ports: 
         - "8080:80"
       volumes:
-        - .:/var/www/app:Z
+        - app:/var/www/app:Z
       environment:
         DB_HOST: vouchergovgr-mysql
       links:
