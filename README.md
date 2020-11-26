@@ -2,10 +2,10 @@
 Config for a dockerized mysql5.5 and php5.3 legacy app
 
 ## Run
-podman-compose up -d
+  podman-compose up -d
 
 ## Stop
-podman-compose down
+  podman-compose down
 
 ## View
-localhost:8080
+  localhost:8080
