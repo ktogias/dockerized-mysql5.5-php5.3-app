@@ -1,23 +1,32 @@
 version: "3.8"
 services:
-  vouchergovgr-mysql:
+  app-mysql:
     build: ./mysql
-    image: vouchergovgr-mysql:latest
-    container_name: vouchergovgr-mysql
+    image: app-mysql:latest
+    container_name: app-mysql
     ports: 
       - "3306:3306"
     volumes:
-      - vouchergovgr-varlibmysql:/var/lib/mysql
-      #- ./db/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d:Z
-  vouchergovgr-php:
-      build: ./php
-      image: vouchergovgr-php:latest
-      container_name: vouchergovgr-php
-      ports: 
-        - "8080:80"
-      volumes:
-        - app:/var/www/app:Z
-      environment:
-        DB_HOST: vouchergovgr-mysql
-      links:
-        - vouchergovgr-mysql
+      - varlibmysql:/var/lib/mysql
+      - ./db/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d:Z
+    environment:
+      MYSQL_DATABASE: mydb
+      MYSQL_ROOT_PASSWORD: mypass
+    command:
+      - "--default-time-zone=Europe/Athens"
+  app-php:
+    build: ./php
+    image: app-php:latest
+    container_name: app-php
+    ports: 
+      - "8080:80"
+    volumes:
+      - .:/var/www/app:Z
+    environment:
+      DB_HOST: app-mysql
+      APPLICATION_ENV: development
+      APPLICATION_USER: auser
+    links:
+      - app-mysql
+volumes:
+  varlibmysql:
